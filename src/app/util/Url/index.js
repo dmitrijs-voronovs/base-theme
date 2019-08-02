@@ -17,7 +17,8 @@ import {
     clearQueriesFromUrl,
     updateQueryParamWithoutHistory,
     convertQueryStringToKeyValuePairs,
-    convertKeyValueObjectToQueryString
+    convertKeyValueObjectToQueryString,
+    updateQueryWithoutHistory
 } from './Url';
 
 export {
@@ -28,5 +29,6 @@ export {
     clearQueriesFromUrl,
     updateQueryParamWithoutHistory,
     convertQueryStringToKeyValuePairs,
-    convertKeyValueObjectToQueryString
+    convertKeyValueObjectToQueryString,
+    updateQueryWithoutHistory
 };

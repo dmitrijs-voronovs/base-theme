@@ -22,9 +22,14 @@ import ProductActions from 'Component/ProductActions';
 import GroupedProductsList from 'Component/GroupedProductsList';
 import Meta from 'Component/Meta';
 import { ProductType } from 'Type/ProductList';
-import { getUrlParam, convertQueryStringToKeyValuePairs, setQueryParams } from 'Util/Url';
 import { getVariantIndex } from 'Util/Product';
 import RelatedProducts from 'Component/RelatedProducts';
+import {
+    getUrlParam,
+    convertQueryStringToKeyValuePairs,
+    generateQuery,
+    updateQueryWithoutHistory
+} from 'Util/Url';
 import './ProductPage.style';
 
 class ProductPage extends Component {
@@ -163,7 +168,8 @@ class ProductPage extends Component {
         const newIndex = getVariantIndex(variants, newParams);
 
         if (configurableVariantIndex !== newIndex) {
-            setQueryParams(options, location, history);
+            const query = generateQuery(options, location, history);
+            updateQueryWithoutHistory(query);
             this.setState({ configurableVariantIndex: newIndex });
         }
     }

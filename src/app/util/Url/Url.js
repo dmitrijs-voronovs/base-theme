@@ -20,6 +20,10 @@ const updateQueryParamWithoutHistory = (name, value) => {
     window.history.replaceState({}, '', decodeURIComponent(`${ window.location.pathname }?${ params }`));
 };
 
+const updateQueryWithoutHistory = (value) => {
+    window.history.replaceState({}, '', decodeURIComponent(`${ window.location.pathname }?${ value }`));
+}
+
 /**
  * Get query param from url
  * @param {Object} match match object from react-router
@@ -166,7 +170,7 @@ const convertKeyValueObjectToQueryString = (parameters) => {
         .slice(0, -1); // remove trailing '&'
 
     return `?${ paramString }`;
-}
+};
 
 export {
     getUrlParam,
@@ -176,5 +180,6 @@ export {
     clearQueriesFromUrl,
     updateQueryParamWithoutHistory,
     convertQueryStringToKeyValuePairs,
-    convertKeyValueObjectToQueryString
+    convertKeyValueObjectToQueryString,
+    updateQueryWithoutHistory
 };
