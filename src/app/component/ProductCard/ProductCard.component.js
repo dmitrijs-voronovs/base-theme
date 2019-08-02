@@ -82,7 +82,6 @@ class ProductCard extends Component {
         return { index: 0, parameters: null };
     }
 
-
     getLinkTo(parameters) {
         const {
             product: {
