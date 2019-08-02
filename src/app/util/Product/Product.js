@@ -20,14 +20,17 @@ const checkEveryOption = (parameters, options) => Object.keys(options)
 
 export const generateParameters = (variant_attributes, configurable_options) => {
     const required_params = configurable_options.map(({ attribute_code }) => attribute_code);
-    const parameters = variant_attributes.reduce((accum, { attribute_code, attribute_value }) => {
-        return required_params.includes(attribute_code)
+    const parameters = variant_attributes.reduce((
+        accum,
+        { attribute_code, attribute_value }
+    ) => (
+        required_params.includes(attribute_code)
             ? {
                 ...accum,
                 [attribute_code]: attribute_value
             }
-            : accum;
-    }, {});
+            : accum
+    ), {});
     return parameters;
 };
 

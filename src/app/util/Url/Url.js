@@ -22,7 +22,7 @@ const updateQueryParamWithoutHistory = (name, value) => {
 
 const updateQueryWithoutHistory = (value) => {
     window.history.replaceState({}, '', decodeURIComponent(`${ window.location.pathname }?${ value }`));
-}
+};
 
 /**
  * Get query param from url
