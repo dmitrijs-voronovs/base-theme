@@ -11,7 +11,7 @@
  * @link https://github.com/scandipwa/base-theme
  */
 
-import React, { Component, Children } from 'react';
+import React, { Children } from 'react';
 import PropTypes from 'prop-types';
 import Draggable from 'Component/Draggable';
 import CSS from 'Util/CSS';
@@ -21,7 +21,7 @@ import './Slider.style';
  * Slider component
  * @class Slider
  */
-class Slider extends Component {
+class Slider extends Draggable {
     constructor(props) {
         super(props);
 
@@ -29,7 +29,8 @@ class Slider extends Component {
 
         this.state = {
             activeSlide: -activeImage,
-            prevActiveImage: activeImage
+            prevActiveImage: activeImage,
+            xPosition: 0
         };
 
         this.prevPosition = 0;
@@ -42,7 +43,6 @@ class Slider extends Component {
     }
 
     static getDerivedStateFromProps(props, state) {
-        // console.log('props & state from Slider', props, state);
         const { activeImage } = props;
         const { prevActiveImage } = state;
 
@@ -68,15 +68,17 @@ class Slider extends Component {
         }, 300);
     }
 
-    componentDidUpdate(prevProps, prevState) {
-        const { activeImage: prevActiveImage } = prevProps;
+    componentDidUpdate(_, prevState) {
         const { activeImage } = this.props;
         const { activeSlide: prevActiveSlide } = prevState;
-        const { activeSlide } = this.state;
+        const { activeSlide, prevActiveImage } = this.state;
+        const newTranslate = activeSlide * this.draggableRef.current.offsetWidth;
+
+        if (activeImage !== prevActiveImage) {
+            this.setState({ xPosition: newTranslate });
+        }
 
         if (activeImage !== prevActiveImage || prevActiveSlide !== activeSlide) {
-            const newTranslate = activeSlide * this.draggableRef.current.offsetWidth;
-
             CSS.setVariable(
                 this.draggableRef,
                 'animation-speed',
@@ -123,7 +125,7 @@ class Slider extends Component {
     }
 
     calculateNextSlide(state) {
-        console.log('fun calculateNextSlide', this.draggableRef, this.draggableRef.current.parentNode);
+        // console.log('fun calculateNextSlide', this.draggableRef, this.draggableRef.current.parentNode);
         const {
             translateX: translate,
             lastTranslateX: lastTranslate
@@ -198,15 +200,15 @@ class Slider extends Component {
             `${newTranslate}px`
         );
 
-        callback({
-            originalX: newTranslate,
-            lastTranslateX: newTranslate
-        });
+        this.setState({ xPosition: newTranslate });
+
+        callback({});
     }
 
     changeActiveImage(activeImage) {
         this.setState({
-            activeSlide: -activeImage
+            activeSlide: -activeImage,
+            xPosition: -activeImage * this.draggableRef.current.offsetWidth
         });
     }
 
@@ -243,14 +245,8 @@ class Slider extends Component {
         );
     }
 
-    renderSlides() {
-        const { children } = this.props;
-        return Children.map(children, slide => slide);
-    }
-
-    render() {
+    renderDraggableWrapper(children) {
         const { showCrumbs, mix } = this.props;
-        const { activeSlide } = this.state;
 
         return (
             <div
@@ -258,16 +254,7 @@ class Slider extends Component {
               mix={ mix }
               ref={ this.sliderRef }
             >
-                <Draggable
-                  mix={ { block: 'Slider', elem: 'Wrapper' } }
-                  draggableRef={ this.draggableRef }
-                  onDragStart={ this.handleDragStart }
-                  onDragEnd={ this.handleDragEnd }
-                  onDrag={ this.handleDrag }
-                  activeSlide={ activeSlide }
-                >
-                    { this.renderSlides() }
-                </Draggable>
+                { children }
                 { showCrumbs && this.renderCrumbs() }
             </div>
         );
