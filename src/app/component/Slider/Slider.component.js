@@ -40,10 +40,6 @@ class Slider extends Draggable {
         this.handleDrag = this.handleDrag.bind(this);
         this.handleDragEnd = this.handleDragEnd.bind(this);
         this.renderCrumb = this.renderCrumb.bind(this);
-
-        // onDragStart
-        // onDragEnd
-        // onDrag
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -78,9 +74,9 @@ class Slider extends Draggable {
         const { activeSlide, prevActiveImage } = this.state;
         const newTranslate = activeSlide * this.draggableRef.current.offsetWidth;
 
-        // if (activeImage !== prevActiveImage) {
-        //     this.setState({ xPosition: newTranslate });
-        // }
+        if (activeImage !== prevActiveImage) {
+            this.setState({ xPosition: newTranslate });
+        }
 
         if (activeImage !== prevActiveImage || prevActiveSlide !== activeSlide) {
             CSS.setVariable(

@@ -148,11 +148,11 @@ class Draggable extends Component {
         this._handleDragEnd();
     }
 
-    handleDragStart() {}
+    // handleDragStart() {}
 
-    handleDragEnd() {}
+    // handleDragEnd() {}
 
-    handleDrag() {}
+    // handleDrag() {}
 
     _handleDragEnd() {
         this.onDragEnd();
