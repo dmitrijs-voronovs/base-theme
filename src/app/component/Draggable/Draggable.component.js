@@ -39,6 +39,10 @@ class Draggable extends Component {
         this.handleTouchStart = this.handleTouchStart.bind(this);
         this.handleTouchMove = this.handleTouchMove.bind(this);
         this.handleTouchEnd = this.handleTouchEnd.bind(this);
+
+        this.handleDragStart = this.handleDragStart.bind(this);
+        this.handleDrag = this.handleDrag.bind(this);
+        this.handleDragEnd = this.handleDragEnd.bind(this);
     }
 
     componentWillUnmount() {
@@ -144,6 +148,12 @@ class Draggable extends Component {
         this._handleDragEnd();
     }
 
+    handleDragStart() {}
+
+    handleDragEnd() {}
+
+    handleDrag() {}
+
     _handleDragEnd() {
         this.onDragEnd();
     }
@@ -158,11 +168,14 @@ class Draggable extends Component {
         return this.renderDraggableWrapper(
             <div
               block="Draggable"
-              mix={ this.mix }
+              mix={ { block: 'Slider', elem: 'Wrapper' } }
               ref={ this.draggableRef }
               onMouseDown={ this.handleMouseDown }
               onTouchStart={ this.handleTouchStart }
               onFocus={ this.onFocus }
+              onDragStart={ this.handleDragStart }
+              onDragEnd={ this.handleDragEnd }
+              onDrag={ this.handleDrag }
               tabIndex={ 0 }
               role="button"
               aria-label="Draggable area"
