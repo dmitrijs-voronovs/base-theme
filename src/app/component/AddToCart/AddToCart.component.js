@@ -114,13 +114,14 @@ class AddToCart extends Component {
         const {
             fullWidth,
             product: {
-                stock_status, variants, type_id
+                type_id,
+                stock_status,
+                variants = []
             },
             configurableVariantIndex
         } = this.props;
 
         const isNotAvailable = stock_status !== 'IN_STOCK';
-
         const isNotVariantAvailable = type_id === 'configurable' && !variants[configurableVariantIndex];
 
         return (

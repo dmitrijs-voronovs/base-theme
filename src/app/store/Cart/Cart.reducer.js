@@ -10,7 +10,7 @@
  */
 
 import BrowserDatabase from 'Util/BrowserDatabase';
-import { generateParameters } from 'Util/Product';
+import { getIndexedParameteredProducts } from 'Util/Product';
 import {
     UPDATE_TOTALS,
     UPDATE_ALL_PRODUCTS_IN_CART
@@ -32,30 +32,14 @@ const updateCartTotals = (action) => {
 
 const updateAllProductsInCart = (action) => {
     const { products } = action;
-    const parameteredProducts = Object.keys(products).reduce((accum, key) => {
-        const currentItem = products[key];
-        const {
-            variants, configurable_options, configurableVariantIndex, type_id
-        } = currentItem;
-        if (type_id !== 'simple') {
-            const { product: selectedVariant } = variants[configurableVariantIndex];
-            const required_params = configurable_options.map(({ attribute_code }) => attribute_code);
-            const parameters = generateParameters(selectedVariant.attributes, required_params);
-            variants[configurableVariantIndex].product = { ...selectedVariant, parameters };
-        }
-
-        return {
-            ...accum,
-            [key]: currentItem
-        };
-    }, {});
+    const productsInCart = getIndexedParameteredProducts(products);
 
     BrowserDatabase.setItem(
-        parameteredProducts,
+        productsInCart,
         PRODUCTS_IN_CART
     );
 
-    return { productsInCart: products };
+    return { productsInCart };
 };
 
 const initialState = {
