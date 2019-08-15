@@ -14,26 +14,48 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ProductGallery from 'Component/ProductGallery';
 import ContentWrapper from 'Component/ContentWrapper';
-import ProductActions from 'Component/ProductActions';
-// import GroupedProductsList from 'Component/GroupedProductsList';
+import ProductInformation from 'Component/ProductInformation';
 import Meta from 'Component/Meta';
+import ProductActions from 'Component/ProductActions';
 import { ProductType } from 'Type/ProductList';
 import RelatedProducts from 'Component/RelatedProducts';
-import ProductInformation from 'Component/ProductInformation';
 import './ProductPage.style';
+import ProductConfigurableAttributes from 'Component/ProductConfigurableAttributes';
 
 class ProductPage extends Component {
+    renderConfigurableAttributes(isReady) {
+        const {
+            product: { configurable_options, type_id },
+            parameters,
+            getLink,
+            updateUrl
+        } = this.props;
+
+        if (type_id !== 'configurable') return null;
+
+        return (
+            <ProductConfigurableAttributes
+              isReady={ isReady }
+              getLink={ getLink }
+              parameters={ parameters }
+              updateConfigurableVariant={ updateUrl }
+              configurable_options={ configurable_options }
+            />
+        );
+    }
+
     render() {
         const {
             product,
-            filters, configurableVariantIndex,
+            getLink,
             updateUrl,
+            configurableVariantIndex,
+            parameters,
             dataSource,
             getProductOrVariant
         } = this.props;
         const areDetailsLoaded = dataSource === product;
-        const productOrVariant = getProductOrVariant(configurableVariantIndex, dataSource);
-
+        const productOrVariant = getProductOrVariant(dataSource);
         return (
             <>
                 <Meta metaObject={ dataSource } />
@@ -51,11 +73,12 @@ class ProductPage extends Component {
                           product={ productOrVariant }
                         />
                         <ProductActions
+                          getLink={ getLink }
+                          updateUrl={ updateUrl }
                           product={ dataSource }
-                          availableFilters={ filters }
+                          parameters={ parameters }
                           areDetailsLoaded={ areDetailsLoaded }
                           configurableVariantIndex={ configurableVariantIndex }
-                          updateConfigurableVariantIndex={ updateUrl }
                         />
                     </ContentWrapper>
                     </div>
@@ -77,17 +100,25 @@ ProductPage.propTypes = {
     getProductOrVariant: PropTypes.func.isRequired,
     updateUrl: PropTypes.func.isRequired,
     dataSource: ProductType.isRequired,
-    filters: PropTypes.object.isRequired,
     location: PropTypes.shape({
         pathname: PropTypes.string.isRequired,
         state: PropTypes.shape({
             product: ProductType
         })
     }),
+    history: PropTypes.shape({
+        location: PropTypes.object.isRequired,
+        push: PropTypes.func.isRequired
+    }).isRequired,
     match: PropTypes.shape({
         path: PropTypes.string.isRequired
     }).isRequired,
-    product: ProductType.isRequired
+    requestProduct: PropTypes.func.isRequired,
+    updateBreadcrumbs: PropTypes.func.isRequired,
+    changeHeaderState: PropTypes.func.isRequired,
+    clearGroupedProductQuantity: PropTypes.func.isRequired,
+    product: ProductType.isRequired,
+    isOnlyPlaceholder: PropTypes.bool
 };
 
 ProductPage.defaultProps = {
