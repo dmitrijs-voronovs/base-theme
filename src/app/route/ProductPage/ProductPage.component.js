@@ -52,6 +52,7 @@ class ProductPage extends Component {
                       label={ __('Main product details') }
                     >
                         <ProductGallery
+                          product={ productOrVariant }
                           thumbnail={ thumbnail }
                           mediaGallery={ mediaGallery }
                         />
