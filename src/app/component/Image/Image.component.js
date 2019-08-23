@@ -62,7 +62,9 @@ class Image extends PureComponent {
     }
 
     renderImage() {
-        const { alt, src, isPlaceholder } = this.props;
+        const {
+            alt, src, isPlaceholder, size
+        } = this.props;
         const { imageStatus } = this.state;
 
         if (isPlaceholder) {
@@ -86,6 +88,7 @@ class Image extends PureComponent {
                   elem="Image"
                   src={ src || '' }
                   alt={ alt }
+                  style={ size }
                   onLoad={ this.onLoad }
                   onError={ this.onError }
                 />
@@ -112,27 +115,30 @@ class Image extends PureComponent {
 }
 
 Image.propTypes = {
-    isPlaceholder: PropTypes.bool,
+    isPlaceholder: PropTypes.bool.isRequired,
     src: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.bool
-    ]),
-    alt: PropTypes.string,
+    ]).isRequired,
+    size: PropTypes.objectOf({
+        width: PropTypes.string,
+        height: PropTypes.string
+    }),
+    alt: PropTypes.string.isRequired,
     ratio: PropTypes.oneOf([
         '4x3',
         '16x9',
         'square',
         'custom'
-    ]),
-    mix: MixType
+    ]).isRequired,
+    mix: MixType.isRequired
 };
 
 Image.defaultProps = {
-    src: '',
-    alt: '',
-    ratio: 'square',
-    mix: {},
-    isPlaceholder: false
+    size: {
+        height: '',
+        width: ''
+    }
 };
 
 export default Image;

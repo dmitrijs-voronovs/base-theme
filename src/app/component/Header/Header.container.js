@@ -310,6 +310,7 @@ HeaderContainer.propTypes = {
             FILTER,
             CART,
             CART_EDITING,
+            CMS_PAGE,
             CHECKOUT
         ]),
         title: PropTypes.string,
