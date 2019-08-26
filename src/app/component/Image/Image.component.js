@@ -63,7 +63,7 @@ class Image extends PureComponent {
 
     renderImage() {
         const {
-            alt, src, isPlaceholder, size
+            alt, src, isPlaceholder, style
         } = this.props;
         const { imageStatus } = this.state;
 
@@ -88,7 +88,7 @@ class Image extends PureComponent {
                   elem="Image"
                   src={ src || '' }
                   alt={ alt }
-                  style={ size }
+                  style={ style }
                   onLoad={ this.onLoad }
                   onError={ this.onError }
                 />
@@ -101,7 +101,7 @@ class Image extends PureComponent {
     render() {
         const { ratio, mix, isPlaceholder } = this.props;
         const { imageStatus } = this.state;
-
+        console.log(this.props.style);
         return (
             <div
               block="Image"
@@ -120,10 +120,10 @@ Image.propTypes = {
         PropTypes.string,
         PropTypes.bool
     ]).isRequired,
-    size: PropTypes.objectOf({
+    style: PropTypes.objectOf({
         width: PropTypes.string,
         height: PropTypes.string
-    }),
+    }).isRequired,
     alt: PropTypes.string.isRequired,
     ratio: PropTypes.oneOf([
         '4x3',
@@ -132,13 +132,6 @@ Image.propTypes = {
         'custom'
     ]).isRequired,
     mix: MixType.isRequired
-};
-
-Image.defaultProps = {
-    size: {
-        height: '',
-        width: ''
-    }
 };
 
 export default Image;

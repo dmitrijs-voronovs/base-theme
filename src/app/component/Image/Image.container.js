@@ -24,12 +24,14 @@ export class ImageContainer extends PureComponent {
         super(props);
 
         this.containerProps = () => ({
-            size: this._getCorrectSize()
+            style: this._getStyle()
         });
     }
 
     _parseSize(size) {
         const trimmedSize = size.trim();
+        if (!trimmedSize) return 'auto';
+
         if (
             trimmedSize.slice(-2) === 'px'
             || trimmedSize.slice(-1) === '%'
@@ -43,10 +45,14 @@ export class ImageContainer extends PureComponent {
     _getCorrectSize() {
         const { width, height } = this.props;
 
-        const correctWidth = this._parseSize(width);
         const correctHeight = this._parseSize(height);
+        const correctWidth = this._parseSize(width);
 
         return { width: correctWidth, height: correctHeight };
+    }
+
+    _getStyle() {
+        return this._getCorrectSize();
     }
 
     render() {
