@@ -1,5 +1,6 @@
 {
     "name": "scandipwa/source",
+    "version": "2.3",
     "type": "magento2-theme",
     "description": "ScandiPWA",
     "keywords": [
