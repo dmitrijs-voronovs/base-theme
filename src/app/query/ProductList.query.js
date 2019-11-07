@@ -492,6 +492,7 @@ export class ProductListQuery {
         return [
             'name',
             'request_var',
+            'position',
             this._getFilterItemsField()
         ];
     }
