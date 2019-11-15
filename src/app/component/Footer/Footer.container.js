@@ -12,7 +12,8 @@ import { connect } from 'react-redux';
 import Footer from './Footer.component';
 
 export const mapStateToProps = state => ({
-    copyright: state.ConfigReducer.copyright
+    copyright: state.ConfigReducer.copyright,
+    isLoading: state.ConfigReducer.isLoading
 });
 
 export default connect(mapStateToProps)(Footer);

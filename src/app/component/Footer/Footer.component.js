@@ -12,6 +12,9 @@
 import { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import Link from 'Component/Link';
+import Logo from 'Component/Logo';
+import media from 'Util/Media';
+import { LOGO_MEDIA } from 'Util/Media/Media';
 import './Footer.style';
 
 /**
@@ -20,12 +23,58 @@ import './Footer.style';
  */
 export default class Footer extends PureComponent {
     static propTypes = {
-        copyright: PropTypes.string
+        copyright: PropTypes.string,
+        header_logo_src: PropTypes.string,
+        logo_alt: PropTypes.string,
+        isLoading: PropTypes.bool
     };
 
     static defaultProps = {
-        copyright: ''
+        copyright: '',
+        logo_alt: 'ScandiPWA logo',
+        header_logo_src: '',
+        isLoading: true
     };
+
+    renderLogoImage() {
+        const {
+            header_logo_src,
+            logo_alt
+        } = this.props;
+
+        // if (!header_logo_src) return null;
+
+        return (
+            <Logo
+              src={ media(header_logo_src, LOGO_MEDIA) }
+              alt={ logo_alt }
+            />
+        );
+    }
+
+    renderLogo(isVisible = false) {
+        const { isLoading } = this.props;
+
+        if (isLoading) return null;
+        return (
+            <Link
+              to="/"
+              aria-label="Go to homepage by clicking on ScandiPWA logo"
+              aria-hidden={ !isVisible }
+              tabIndex={ isVisible ? 0 : -1 }
+              block="Header"
+              elem="LogoWrapper"
+              mods={ { isVisible } }
+              key="logo"
+              itemScope
+              itemType="http://schema.org/Organization"
+            >
+                <meta itemProp="legalName" content="ScandiPWA" />
+                <meta itemProp="parentOrganization" content="Scandiweb" />
+                { this.renderLogoImage() }
+            </Link>
+        );
+    }
 
     render() {
         const { copyright } = this.props;
@@ -48,6 +97,7 @@ export default class Footer extends PureComponent {
                         { __('Shopping terms and conditions') }
                     </Link>
                     <span block="Footer" elem="Copyright">{ copyright }</span>
+                    { this.renderLogo(true) }
                 </div>
             </footer>
         );
