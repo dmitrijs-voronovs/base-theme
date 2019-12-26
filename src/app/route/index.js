@@ -226,6 +226,7 @@ class AppRouter extends PureComponent {
     }
 
     render() {
+        console.log('here we go again');
         return (
             <Router history={ history }>
                 { this.renderRouterContent() }
