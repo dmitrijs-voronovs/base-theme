@@ -232,25 +232,19 @@ export class AppRouter extends PureComponent {
         );
     }
 
-    renderMainItems() {
+    renderErrorRouterContent() {
         const { isOffline, isBig } = this.props;
 
         if (isOffline && isBig) {
-            return <OfflineNotice isPage />;
+            return (
+                <>
+                    { this.renderItemsOfType(BEFORE_ITEMS_TYPE) }
+                    <OfflineNotice isPage />
+                    { this.renderItemsOfType(AFTER_ITEMS_TYPE) }
+                </>
+            );
         }
 
-        return (
-            <Suspense fallback={ this.renderFallbackPage() }>
-                <NoMatchHandler>
-                    <Switch>
-                        { this.renderItemsOfType(SWITCH_ITEMS_TYPE) }
-                    </Switch>
-                </NoMatchHandler>
-            </Suspense>
-        );
-    }
-
-    renderErrorRouterContent() {
         const { errorDetails } = this.state;
 
         return (
@@ -271,7 +265,13 @@ export class AppRouter extends PureComponent {
         return (
             <>
                 { this.renderItemsOfType(BEFORE_ITEMS_TYPE) }
-                { this.renderMainItems() }
+                <Suspense fallback={ this.renderFallbackPage() }>
+                    <NoMatchHandler>
+                        <Switch>
+                            { this.renderItemsOfType(SWITCH_ITEMS_TYPE) }
+                        </Switch>
+                    </NoMatchHandler>
+                </Suspense>
                 { this.renderItemsOfType(AFTER_ITEMS_TYPE) }
             </>
         );
