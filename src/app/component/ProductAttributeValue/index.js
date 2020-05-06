@@ -9,6 +9,4 @@
  * @link https://github.com/scandipwa/base-theme
  */
 
-export * from './CmsPage.action';
-export { default as CmsPageReducer } from './CmsPage.reducer';
-export { default as CmsPageDispatcher, CmsPageDispatcher as CmsPageDispatcherClass } from './CmsPage.dispatcher';
+export { default } from './ProductAttributeValue.component';

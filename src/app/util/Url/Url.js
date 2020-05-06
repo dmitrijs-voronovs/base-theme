@@ -12,7 +12,7 @@
 /**
  * Update query params without adding to history
  * @param {String} name
- * @param {Number} value
+ * @param {String} value
  */
 const updateQueryParamWithoutHistory = (name, value) => {
     const params = new URLSearchParams(window.location.search);
@@ -63,7 +63,7 @@ const convertQueryStringToKeyValuePairs = (queryString) => {
         const pair = param.split('=');
         const [keyPair, valuePair] = pair;
 
-        keyValuePairs[keyPair] = valuePair;
+        if (keyPair.length > 0 && valuePair.length > 0) keyValuePairs[keyPair] = valuePair;
     });
 
     return keyValuePairs;

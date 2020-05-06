@@ -21,7 +21,11 @@ import TextPlaceholder from 'Component/TextPlaceholder';
 import CategoryShoppingOptions from 'Component/CategoryShoppingOptions';
 import Meta from 'Component/Meta';
 import {
-    getUrlParam, getQueryParam, setQueryParams, clearQueriesFromUrl, convertQueryStringToKeyValuePairs
+    getUrlParam,
+    getQueryParam,
+    setQueryParams,
+    clearQueriesFromUrl,
+    convertQueryStringToKeyValuePairs
 } from 'Util/Url';
 import { CategoryTreeType } from 'Type/Category';
 import { PagesType } from 'Type/ProductList';
@@ -324,12 +328,8 @@ class CategoryPage extends Component {
         }, location, history);
     }
 
-    /**
-     * Update Query parameters for custom filters
-     * @return {void}
-     */
-    updateFilter(filterName, filterArray) {
-        const { location, history } = this.props;
+    getFilterUrl(filterName, filterArray, isFull = true) {
+        const { location: { pathname } } = this.props;
         const prevCustomFilters = this.getCustomFiltersFromUrl();
 
         prevCustomFilters[filterName] = filterArray;
@@ -355,8 +355,18 @@ class CategoryPage extends Component {
         customFilters = hasTrailingSemicolon ? customFiltersString.slice(0, -1) : customFiltersString;
         customFilters = hasLeadingSemicolon ? customFilters.slice(1) : customFilters;
 
+        return `${isFull ? `${pathname}?` : ''}${customFilters}`;
+    }
+
+    /**
+     * Update Query parameters for custom filters
+     * @return {void}
+     */
+    updateFilter(filterName, filterArray) {
+        const { location, history } = this.props;
+
         setQueryParams({
-            customFilters,
+            customFilters: this.getFilterUrl(filterName, filterArray, false),
             page: ''
         }, location, history);
     }
@@ -527,6 +537,7 @@ class CategoryPage extends Component {
                           customFiltersValues={ customFilters }
                           updatePriceRange={ priceRange => this.updatePriceRange(priceRange) }
                           updateFilter={ (filterName, filterArray) => this.updateFilter(filterName, filterArray) }
+                          getFilterUrl={ (filterName, filterArray) => this.getFilterUrl(filterName, filterArray) }
                           updateSearch={ value => this.updateSearch(value) }
                           clearFilters={ () => this.clearFilters(location, history) }
                           sortKey={ sortKey }
